@@ -2,23 +2,7 @@ import { useState } from "react";
 
 const App = () => {
 
-  const [list, setList] = useState([
-    {
-      title: 'task #1',
-      editing: false,
-      completed: false,
-    },
-    {
-      title: 'task #2',
-      editing: false,
-      completed: false,
-    },
-    {
-      title: 'task #3',
-      editing: false,
-      completed: false,
-    }
-  ]);
+  const [list, setList] = useState([]);
   const [input, setInput] = useState('')
   const [itemInput, setItemInput] = useState('')
 
@@ -34,7 +18,6 @@ const App = () => {
   }
 
   const toggle = (item) => {
-    console.log('toggle', item)
     const _list = [...list];
     _list[list.indexOf(item)].completed = !isItemSelected(item)
     setList(_list)
@@ -70,7 +53,6 @@ const App = () => {
   }
 
   const itemClick = (item, event) => {
-    console.log(item, event.detail, event)
     const _list = list.map(_item => {
       return { ..._item, editing: _item.title === item.title }
     });
@@ -131,8 +113,11 @@ const App = () => {
           {list.map((item, i) => <li key={`task-${i}`} className={itemClassName(item)}>
             <div className="view">
               <input className='toggle' type='checkbox' id={`task-${i}`} checked={isItemSelected(item)} onChange={() => toggle(item)} />
-              <label onDoubleClick={(e) => itemClick(item, e)}>{item.title}</label>
-              <i className='destroy' onClick={(e) => destroy(e, item)} />
+              <label onDoubleClick={(e) => itemClick(item, e)}>
+                {item.title}
+                <div className='destroy' onClick={(e) => destroy(e, item)} />
+              </label>
+
             </div>
             <input value={itemInput} onInput={e => setItemInput(e.target.value)} className='edit' onBlur={() => itemSave(item)} onKeyDown={(e) => handleKeyDownItem(e, item)} type='text' autoFocus />
           </li>)}

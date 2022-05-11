@@ -29,30 +29,26 @@ const App = () => {
   const toggleAll = () => {
     const _list = [...list];
     setList(_list.map(item => {
-      return { ...item, completed: allItemsCompleted() }
+      return { ...item, completed: !allItemsCompleted() }
     }))
   }
 
   const toggle = (item) => {
+    console.log('toggle', item)
     const _list = [...list];
     _list[list.indexOf(item)].completed = !isItemSelected(item)
     setList(_list)
   }
 
-  const destroy = (item) => {
+  const destroy = (event, item) => {
     const _list = [...list];
     _list.splice(list.indexOf(item), 1)
     setList(_list)
-    if (isItemSelected(item)) {
-      toggle(item)
-    }
+    event.stopPropagation();
   }
 
   const count = () => {
-    return list.reduce((previous, current) => {
-      console.log(previous, current)
-      return 0
-    })
+    return list.filter(item => !item.completed).length
   }
 
   const clearCompleted = () => {
@@ -66,13 +62,7 @@ const App = () => {
   }
 
   const allItemsCompleted = () => {
-    let completed = 0
-    list.forEach(item => {
-      if (item.completed) {
-        completed += 1;
-      }
-    })
-    return list.length === completed
+    return list.every(item => item.completed)
   }
 
   const itemClassName = (item) => {
@@ -85,33 +75,30 @@ const App = () => {
   }
 
   const itemClick = (item, event) => {
-    console.log(item, event.detail)
-    if (event.detail === 1) {
-      toggle(item)
-    } else
-      if (event.detail === 2) {
-        item.editing = true
-        setItemInput(item.title)
-      }
+    console.log(item, event.detail, event)
+    const _list = list.map(_item => {
+      return { ..._item, editing: _item.title === item.title }
+    });
+    setList(_list)
+    setItemInput(item.title)
   }
 
   const itemSave = (item) => {
-    console.log(item)
     const _list = [...list]
-    _list.splice(_list.indexOf(item), 1, itemInput)
-    console.log(list, _list, itemInput)
+    _list.splice(_list.indexOf(item), 1, { ...item, title: itemInput, editing: false })
     setList(_list)
-    setItemInput('')
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      if (!list.includes(input)) {
-        setList([...list, input])
+    if (input.length) {
+      if (event.key === 'Enter') {
+        if (!findItem(input)) {
+          setList([...list, { title: input, editing: false, completed: false }])
+          setInput('')
+        }
+      } else if (event.key === 'Escape') {
         setInput('')
       }
-    } else if (event.key === 'Escape') {
-      setInput('')
     }
   }
 
@@ -120,9 +107,17 @@ const App = () => {
       if (itemInput.length) {
         itemSave(item)
       } else {
-        destroy(item)
+        destroy(event, item)
       }
+    } else if (event.key === 'Escape') {
+      const _list = [...list]
+      _list.splice(_list.indexOf(item), 1, { ...item, editing: false })
+      setList(_list)
     }
+  }
+
+  const findItem = (title) => {
+    return list.find(item => item.title.toLowerCase() === title.toLowerCase())
   }
 
   return (
@@ -131,27 +126,28 @@ const App = () => {
         <h1>TODOS</h1>
       </header>
       <div className='new-todo'>
-        <input onKeyDown={(e) => handleKeyDown(e)} onInput={e => setInput(e.target.value)} className='new-todo' value={input} autoFocus />
+        <input onKeyDown={(e) => handleKeyDown(e)} onChange={(e) => setInput(e.target.value)} className='new-todo' value={input} autoFocus />
+        {input}
       </div>
 
       {list.length > 0 && <main id='main' className='main'>
         <input type='checkbox' id='toggle-all' className='toggle-all' onChange={() => toggleAll()} checked={allItemsCompleted()} />
         <label htmlFor='toggle-all' />
         <ul className='todo-list'>
-          {list.map((item, i) => <li onClick={(e) => itemClick(item, e)} key={`task-${i}`} className={itemClassName(item)}>
+          {list.map((item, i) => <li key={`task-${i}`} className={itemClassName(item)}>
             <div className="view">
-              <input className='toggle' type='checkbox' id={`task-${i}`} checked={isItemSelected(item)} />
-              <label htmlFor={`task-${i}`}>{item.title}</label>
-              <i className='destroy' onClick={() => destroy(item)} />
+              <input className='toggle' type='checkbox' id={`task-${i}`} checked={isItemSelected(item)} onChange={() => toggle(item)} />
+              <label onDoubleClick={(e) => itemClick(item, e)}>{item.title}</label>
+              <i className='destroy' onClick={(e) => destroy(e, item)} />
             </div>
-            <input value={itemInput} onInput={e => setItemInput(e.target.value)} className='edit' onBlur={() => itemSave(item)} onKeyDown={(e) => handleKeyDownItem(e, item)} type='text' />
+            <input value={itemInput} onInput={e => setItemInput(e.target.value)} className='edit' onBlur={() => itemSave(item)} onKeyDown={(e) => handleKeyDownItem(e, item)} type='text' autoFocus />
           </li>)}
         </ul>
       </main>}
 
       {list.length > 0 && <footer id='footer' className='footer'>
         <span className='todo-count'>
-          <strong>{count()}</strong> items left
+          <strong>{count()}</strong> {count() !== 1 ? 'items' : 'item'} left
         </span>
         <ul className='filters'>
           <li><a href="/" className='selected'>All</a></li>

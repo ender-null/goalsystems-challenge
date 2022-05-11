@@ -52,12 +52,7 @@ const App = () => {
   }
 
   const clearCompleted = () => {
-    const _list = [...list];
-    _list.forEach(item => {
-      if (item.completed) {
-        _list.splice(_list.indexOf(item), 1)
-      }
-    })
+    const _list = list.filter(item => !item.completed);
     setList(_list)
   }
 
@@ -127,7 +122,6 @@ const App = () => {
       </header>
       <div className='new-todo'>
         <input onKeyDown={(e) => handleKeyDown(e)} onChange={(e) => setInput(e.target.value)} className='new-todo' value={input} autoFocus />
-        {input}
       </div>
 
       {list.length > 0 && <main id='main' className='main'>

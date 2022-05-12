@@ -1,0 +1,1 @@
+export interface Item { title: string, editing: boolean, completed: boolean }

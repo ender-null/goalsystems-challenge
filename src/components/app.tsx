@@ -1,30 +1,31 @@
 import { useState } from "react";
+import { Item } from "../model/types";
 
 const App = () => {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<Item[]>([]);
   const [input, setInput] = useState("");
   const [itemInput, setItemInput] = useState("");
 
-  const isItemSelected = (item) => {
+  const isItemSelected = (item: Item) => {
     return item.completed;
   };
 
   const toggleAll = () => {
     const _list = [...list];
     setList(
-      _list.map((item) => {
+      _list.map((item: Item) => {
         return { ...item, completed: !allItemsCompleted() };
       })
     );
   };
 
-  const toggle = (item) => {
+  const toggle = (item: Item) => {
     const _list = [...list];
     _list[list.indexOf(item)].completed = !isItemSelected(item);
     setList(_list);
   };
 
-  const destroy = (event, item) => {
+  const destroy = (event: React.KeyboardEvent<HTMLInputElement>|React.MouseEvent<HTMLDivElement, MouseEvent>, item: Item) => {
     const _list = [...list];
     _list.splice(list.indexOf(item), 1);
     setList(_list);
@@ -32,19 +33,19 @@ const App = () => {
   };
 
   const count = () => {
-    return list.filter((item) => !item.completed).length;
+    return list.filter((item: Item) => !item.completed).length;
   };
 
   const clearCompleted = () => {
-    const _list = list.filter((item) => !item.completed);
+    const _list = list.filter((item: Item) => !item.completed);
     setList(_list);
   };
 
   const allItemsCompleted = () => {
-    return list.every((item) => item.completed);
+    return list.every((item: Item) => item.completed);
   };
 
-  const itemClassName = (item) => {
+  const itemClassName = (item: Item) => {
     if (item.editing) {
       return "editing";
     } else if (isItemSelected(item)) {
@@ -53,7 +54,7 @@ const App = () => {
     return "";
   };
 
-  const itemClick = (item, event) => {
+  const itemClick = (item: Item) => {
     const _list = list.map((_item) => {
       return { ..._item, editing: _item.title === item.title };
     });
@@ -61,7 +62,7 @@ const App = () => {
     setItemInput(item.title);
   };
 
-  const itemSave = (item) => {
+  const itemSave = (item: Item) => {
     const _list = [...list];
     _list.splice(_list.indexOf(item), 1, {
       ...item,
@@ -71,7 +72,7 @@ const App = () => {
     setList(_list);
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (input.length) {
       if (event.key === "Enter") {
         if (!findItem(input)) {
@@ -87,7 +88,7 @@ const App = () => {
     }
   };
 
-  const handleKeyDownItem = (event, item) => {
+  const handleKeyDownItem = (event: React.KeyboardEvent<HTMLInputElement>, item: Item) => {
     if (event.key === "Enter") {
       if (itemInput.length) {
         itemSave(item);
@@ -101,9 +102,9 @@ const App = () => {
     }
   };
 
-  const findItem = (title) => {
+  const findItem = (title: string) => {
     return list.find(
-      (item) => item.title.toLowerCase() === title.toLowerCase()
+      (item: Item) => item.title.toLowerCase() === title.toLowerCase()
     );
   };
 
@@ -143,7 +144,7 @@ const App = () => {
                     checked={isItemSelected(item)}
                     onChange={() => toggle(item)}
                   />
-                  <label onDoubleClick={(e) => itemClick(item, e)}>
+                  <label onDoubleClick={() => itemClick(item)}>
                     {item.title}
                     <div
                       className="destroy"

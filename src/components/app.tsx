@@ -154,7 +154,7 @@ const App = () => {
                 </div>
                 <input
                   value={itemInput}
-                  onInput={(e) => setItemInput(e.target.value)}
+                  onChange={(e) => setItemInput(e.target.value)}
                   className="edit"
                   onBlur={() => itemSave(item)}
                   onKeyDown={(e) => handleKeyDownItem(e, item)}

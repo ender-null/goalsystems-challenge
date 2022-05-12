@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Item } from "../model/types";
-import Footer from "./footer";
-import List from "./list";
+import ActivePage from "../pages/active";
+import AllPage from "../pages/all";
+import CompletedPage from "../pages/completed";
 import NewTodo from "./new-todo";
 
 const App = () => {
@@ -18,14 +20,25 @@ const App = () => {
   }, [list]);
 
   return (
-    <div className="todoapp">
-      <header>
-        <h1>TODOS</h1>
-      </header>
-      <NewTodo list={list} setList={setList} />
-      {list.length > 0 && <List list={list} setList={setList} />}
-      {list.length > 0 && <Footer list={list} setList={setList} />}
-    </div>
+    <BrowserRouter>
+      <div className="todoapp">
+        <header>
+          <h1>TODOS</h1>
+        </header>
+        <NewTodo list={list} setList={setList} />
+        <Routes>
+          <Route path="/" element={<AllPage list={list} setList={setList} />} />
+          <Route
+            path="/active"
+            element={<ActivePage list={list} setList={setList} />}
+          />
+          <Route
+            path="/completed"
+            element={<CompletedPage list={list} setList={setList} />}
+          />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 };
 

@@ -2,7 +2,7 @@ import { ListProps } from "../model/props";
 import { Item } from "../model/types";
 import Task from "./task";
 
-const List = ({ list, setList }: ListProps) => {
+const List = ({ list, setList, filter }: ListProps) => {
   const allItemsCompleted = () => {
     return list.every((item: Item) => item.completed);
   };
@@ -16,6 +16,15 @@ const List = ({ list, setList }: ListProps) => {
     );
   };
 
+  const filteredList = () => {
+    return list.filter((item) => {
+      if (filter) {
+        return filter === "active" ? !item.completed : item.completed;
+      }
+      return true;
+    });
+  };
+
   return (
     <main id="main" className="main">
       <input
@@ -27,7 +36,7 @@ const List = ({ list, setList }: ListProps) => {
       />
       <label htmlFor="toggle-all" />
       <ul className="todo-list">
-        {list.map((item, i) => (
+        {filteredList().map((item, i) => (
           <Task key={i} item={item} list={list} setList={setList} />
         ))}
       </ul>

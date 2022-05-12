@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 import { FooterProps } from "../model/props";
 import { Item } from "../model/types";
 
-const Footer = ({ list, setList }: FooterProps) => {
+const Footer = ({ list, setList, filter }: FooterProps) => {
   const count = () => {
     return list.filter((item: Item) => !item.completed).length;
   };
@@ -18,15 +19,22 @@ const Footer = ({ list, setList }: FooterProps) => {
       </span>
       <ul className="filters">
         <li>
-          <a href="/" className="selected">
+          <Link to="/" className={!filter ? "selected" : ""}>
             All
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/active">Active</a>
+          <Link to="/active" className={filter === "active" ? "selected" : ""}>
+            Active
+          </Link>
         </li>
         <li>
-          <a href="/completed">Completed</a>
+          <Link
+            to="/completed"
+            className={filter === "completed" ? "selected" : ""}
+          >
+            Completed
+          </Link>
         </li>
       </ul>
       {count() !== list.length && (

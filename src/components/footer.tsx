@@ -29,9 +29,11 @@ const Footer = ({ list, setList }: FooterProps) => {
           <a href="/completed">Completed</a>
         </li>
       </ul>
-      <button onClick={() => clearCompleted()} className="clear-completed">
-        Clear completed
-      </button>
+      {count() !== list.length && (
+        <button onClick={() => clearCompleted()} className="clear-completed">
+          Clear completed
+        </button>
+      )}
     </footer>
   );
 };

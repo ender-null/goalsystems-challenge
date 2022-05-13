@@ -1,6 +1,6 @@
-import Footer from "../components/footer";
-import List from "../components/list";
-import { CompletedPageProps } from "../model/props";
+import Footer from "../../components/footer/footer";
+import List from "../../components/list/list";
+import { CompletedPageProps } from "../../model/props";
 
 const CompletedPage = ({ list, setList }: CompletedPageProps) => {
   return (

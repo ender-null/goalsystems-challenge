@@ -1,6 +1,6 @@
-import Footer from "../components/footer";
-import List from "../components/list";
-import { AllPageProps } from "../model/props";
+import Footer from "../../components/footer/footer";
+import List from "../../components/list/list";
+import { AllPageProps } from "../../model/props";
 
 const AllPage = ({ list, setList }: AllPageProps) => {
   return (

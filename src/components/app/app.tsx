@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Item } from "../model/types";
-import ActivePage from "../pages/active";
-import AllPage from "../pages/all";
-import CompletedPage from "../pages/completed";
-import NewTodo from "./new-todo";
+import { Item } from "../../model/types";
+import ActivePage from "../../pages/active/active";
+import AllPage from "../../pages/all/all";
+import CompletedPage from "../../pages/completed/completed";
+import NewTodo from "../new-todo/new-todo";
+import "./app.css";
 
 const App = () => {
   const [list, setList] = useState<Item[]>(() => {

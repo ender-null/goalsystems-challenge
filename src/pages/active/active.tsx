@@ -1,6 +1,6 @@
-import Footer from "../components/footer";
-import List from "../components/list";
-import { ActivePageProps } from "../model/props";
+import Footer from "../../components/footer/footer";
+import List from "../../components/list/list";
+import { ActivePageProps } from "../../model/props";
 
 const ActivePage = ({ list, setList }: ActivePageProps) => {
   return (

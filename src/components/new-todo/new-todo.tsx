@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { NewTodoProps } from "../model/props";
-import { Item } from "../model/types";
+import { NewTodoProps } from "../../model/props";
+import { Item } from "../../model/types";
+import "./new-todo.css";
 
 const NewTodo = ({ list, setList }: NewTodoProps) => {
   const [input, setInput] = useState("");
@@ -28,12 +29,13 @@ const NewTodo = ({ list, setList }: NewTodoProps) => {
   };
 
   return (
-    <div className="new-todo">
+    <div>
       <input
         onKeyDown={(e) => handleKeyDown(e)}
         onChange={(e) => setInput(e.target.value)}
         className="new-todo"
         value={input}
+        placeholder="What needs to be done?"
         autoFocus
       />
     </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { TaskProps } from "../model/props";
+import { TaskProps } from "../../model/props";
+import "./task.css";
 
 const Task = ({ list, setList, item }: TaskProps) => {
   const [itemInput, setItemInput] = useState<string>("");

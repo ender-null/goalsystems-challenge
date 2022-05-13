@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { FooterProps } from "../model/props";
-import { Item } from "../model/types";
+import { FooterProps } from "../../model/props";
+import { Item } from "../../model/types";
+import "./footer.css";
 
 const Footer = ({ list, setList, filter }: FooterProps) => {
   const count = () => {

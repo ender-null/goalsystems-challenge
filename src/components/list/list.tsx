@@ -1,6 +1,7 @@
-import { ListProps } from "../model/props";
-import { Item } from "../model/types";
-import Task from "./task";
+import { ListProps } from "../../model/props";
+import { Item } from "../../model/types";
+import Task from "../task/task";
+import "./list.css";
 
 const List = ({ list, setList, filter }: ListProps) => {
   const allItemsCompleted = () => {
